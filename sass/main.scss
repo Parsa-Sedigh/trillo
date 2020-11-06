@@ -1,0 +1,313 @@
+/*COLORS
+Primary: #eb2f64
+Primary light: #FF3366
+Primary dark: #BA265D
+Grey light 1: #faf9f9
+Grey light 2: #f4f2f2
+Grey light 3: #f0eeee
+Grey light 4: #ccc
+Grey dark 1: #333
+Grey dark 2: #777
+Grey dark 3: #999*/
+/* 2) Why flexbox, an overview of the philosophy behind flexbox:
+What is flexbox?
+Flexbox is a new module in CSS3 that makes it easy to align elements to one another, in different directions and orders and also
+to CHANGE those alignments if necessary.
+When we wanna change those alignments?
+For example in responsive design and that works perfectly, even if you have no idea about the dimensions of those elements that you
+want to align them.
+Because the main idea behind flexbox is to give the give the container the ability to expand and to shrink to best use all
+of the available space.
+So with flexbox, you can easily replace float layouts, with much less and much more readable and logical code.
+And because of that, flexbox completely changes the way that we build layouts and especially one-dimensional layouts.
+For 2-dimensional layouts, there are better ways of building them. Like using css grid layout.
+
+The element which we use flexbox on it, is called the flex container and in order to create a flex container, is to set it's
+display prop to flex. We can also set it to flex-inline which creates a flex container which behaves like an inline element.
+But we always never use that one.
+All the direct children of the flex container, are called the flex items.
+The direction which these flex items are laid out is called the main axis and the other perpendicular axis is called the
+cross axis.
+
+
+------------------------> MAIN AXIS
+        |
+        |
+        |
+        |
+        |
+        |
+        |
+        ^
+CROSS AXIS
+
+Notice: The x-y axis in css are exactly like the axises in flex-box. So in general css we have: ------>x
+                                                                                                |
+                                                                                                |
+                                                                                                |
+                                                                                                Y
+
+We can change the direction of main axis and also there are different ways of aligning elements along both main axis and
+the cross axis.
+
+The flexbox specification, defines a couple of properties that we use on the flex container in order to position and
+align all of the flex items and then we have also some other properties that we use directly on the flex items themselves.
+The properties that we use on the flex container(the first value is the default or initial value of that prop):
+1) flex-direction: row | row-reverse | column | column-reverse
+This prop specifies in which direction, the main axis goes. You can see the flex-direction: row; in the example above.
+
+2) flex-wrap: nowrap | wrap | wrap-reverse
+This prop specifies if the flex items should wrap into a new line, if there's not enough space in the flex container, or not.
+
+3) justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly
+This prop defines how the flex items will be aligned along the main axis.
+
+4) align-items: flex-start | flex-end | center | baseline
+This prop is very similar to justify-content with a difference which is this one defines how the flex items will be aligned
+along the cross axis, not the main axis. So align-items, many times is used together with justify-content.
+
+5) align-content: stretch | flex-start | flex-end | center | space-between | space-around
+This prop only applies, when there's more than one row of flex items. So if there is more than 1 row of flex items, in that
+case, align-content controls how the rows are aligned along the cross axis, IF there is some empty space there.
+
+The properties that we use on the flex items:
+1) align-self: auto | stretch | flex-start | flex-end | center | baseline
+This prop is very similar to align-items but this prop is for one individual flex item. So imagine we set align-items: center; ,
+but then we want one of the flex items to be aligned to the bottom, therefore we can use align-self for that.
+
+2) order: 0 | <integer>
+This prop defines the order which in that order, one specific flex item should appear inside the flex container and this is
+really helpful to reorder flex items, for example for smaller screens.
+
+Also we have 3 props that together, basically help flexbox to decides on the width of a flex item.
+With flex-grow we define how much an item can grow, with flex-shrink we define how much it can shrink and with flex-basis
+we can define it's base width.
+3) flex-grow: 0 | <integer>
+In this prop we define how much an flex item can grow
+
+4) flex-shrink: 1 | <integer>
+With this prop, we define how much a flex item can shrink.
+
+5) flex-basis: auto | <length>
+With this prop, we can define the base width of a flex item.
+
+6) There's a shorthand prop for 3, 4 and 5 props, which is simply called flex and this one is actually the one that we should
+use it instead of those 3 individual props.
+flex: 0 1 auto | <int> <int> <len> */
+
+/* 3) A basic intro to flexbox, the flex container:
+In emmet, when you say:
+.container>.item*5
+It will create a div with class of container and then 5 CHILDREN(by using >) in that container with class of .item .
+We can do some global reset and also set the border-box to box-sizing, by using universal selector.
+Now let's focus on flexbox properties that we can apply on the container.
+
+The first thing we have to do in order to use flexbox, is to set display prop to flex on the container. What happens after that is
+flex items(the children of that container) would be automatically sit side by side, without using any float or display: inline-block;
+on them. All we did was set the container to flex, then automatically the child elements of that container, become flex items and
+sit side by side.
+Now let's set flex-direction on the container. The default or initial value of that prop is row. So if you say row, nothing changes,
+right? Because that's the default. Because by setting display to flex on the container, automatically the flex-direction is set to row,
+without we need to say that. Like it's(flex-direction: row;) there but we couldn't see it.
+If you say, row-reverse, it inverts the direction of main-axis. So the main-axis in that case, goes from RIGHT to left.
+
+If you say: flex-direction: column; the flex-items are stacked one on top of another. So basically, the main-axis starts from
+top to left and therefore the cross axis, starts from left to right.
+If you use column-reverse, the main-axis will start from BOTTOM to TOP but the cross-axis will AGAIN start from LEFT TO RIGHT.
+So this prop is handy for responsive designs. So on smaller screens in some cases, we can set the flex-direction to column and the
+flex-items would be on top of each other.
+
+justify-content is used to control how the flex-items should be positioned along the MAIN-AXIS.
+If you set justify-content: center; to ON THE FLEX CONTAINER(which has display: flex; definitely), the items are in center of the
+container(horizontally centered).
+Important: But remember, justify-content: center; doesn't do anything to the space that's between the flex-items. Because the space that
+ we have there, is defined by the margin that we have on the items.
+So all the justify-content: center; does, is to put all the items in the center of flex-container.
+
+By setting justify-content: space-between; on the flex container, the space between flex-items is evenly distributed between those
+flex-items and flexbox automatically does all that calculation for us and automatically positions the elements like that. Also
+if you change the width of the screen, then the space that's between those items ALSO ADJUSTS itself to the space of screen.
+
+If you use justify-content: space-around; , it puts the same amount of space on BOTH(because by using justify-content: space-between; ,
+it won't put space on the outer flex-items, outer means the items that are the first and last-but by using space-around, it will also
+put space on both sides(the side that is not in between flex-items) of first and last items) left side and right side of each of the
+flex-items. So the space in left and right side of a flex-item is the same(in space-around), which causes the inner spaces become
+double of outer spaces.
+Learn: So what this means, is the total space between 2 flex-items(the inner spaces) is DOUBLE the space that's of outer-space
+ of first and last flex-items. The outer space in a row main-axis is the left side of first flex-item and the right side of last
+ flex-item and the outer space in column main-axis is the top of the first flex-item and bottom space of last flex-item.
+
+what justify-content: space-evenly; does, is that the space is always the same between inner spaces and also the outer spaces. So
+all of the spaces are the same. So while space-evenly ensures that the space is always the same BETWEEN elements and ALSO on the
+SIDES of the elements, space-around ensures that the amount of space AROUND each element(AROUND means left and right side of a
+flex-item) is the same. So these are subtle differences.
+
+Important: So space-between won't put space on outer spaces, space-around makes the left and right side of a flex-item have the
+ same space(which causes the inner spaces double the outer-spaces) and space-evenly makes ALL OF THE SPACES(INNER AND OUTER) THE SAME.
+ So: space-between, space-around space-evenly and center(which doesn't effect the space between our space outer of each item).
+We also have justify-content: flex-end; all of the items will go to right side(when the flex-direction is set to row-default) and
+also we have justify-content: flex-start which is the default(all of the items will be in left side of container-when the flex-direction
+is set to row). These flex-start and flex-end won't effect the spaces.
+
+justify-content defines how the flex-items are aligned ALONG THE MAIN-AXIS. But align-items defines how the flex-items are aligned
+along the cross axis. So remember by default we have: ---------> main-axis and in general css we ALSO have the same: -------> x
+                                                      |                                                              |
+                                                      |                                                              |
+                                                      |                                                              |
+                                                      |                                                              |
+                                                      |                                                              Y
+                                                      cross-axis
+Now in order for align-items to work and we see it visually, we actually need at least one of them to be bigger than the others.
+Because right now, they're already perfectly aligned along the cross axis, so it's already centered vertically(why vertically?
+Because the cross axis currently is from top to bottom.).
+So if we make one of those items bigger or smaller than the others, then we can experiment with different alignments across the
+cross axis by using align-items. So let's give one them a different height. If you do this, you instantly see that ALL OF THEM
+growed and not JUST the .i2-but we just define a height for one of them, what happened?
+That's because the initial or default value for align-items is stretch and we know that the align-items: stretch; is set on the
+items from the beginning but we can't see it(it's a default).
+By using align-items: center; you see that currently we have one element taller than the other items and with align-items set to
+center, we basically centered those smaller items, relative to the taller item in vertical direction so in this case in the cross
+axis and that taller one was already centered along the cross axis therefore the smaller ones are also centered along the cross axis.
+
+By setting align-items to flex-start, then all of the items would be aligned at the top(would stick to starting place of cross axis).
+and for align-items: flex-end; all of the items would stick to the ending point of cross axis(or bottom of cross axis-if the
+flex-direction is set to row).
+
+Now what does align-items: stretch do?
+Learn: It simply stretches all of the OTHER elements to match the height of the highest flex-item.
+
+For using align-items: baseline; let's increase the font-size on one of the items. Now if you set the baseline, it will basically
+align the TEXT in the flex-items along a line. So if you draw an imaginary line there, UNDER those texes of each flex-item,
+you see that they're completely aligned along that line.
+So basically align-items: baseline; , align the text of each flex-item to their common text (or along a line).
+
+So flex-direction, justify-content and align-items are crucial on flex containers. Also there are flex-wrap and align-content.
+
+Now what happens to justify-content and align-items, when we change the flex-direction? So when flex-direction is set to column,
+the main axis is no longer going from left to right(when it's set to row), but from the top tp bottom.
+Now why the items are horizontally centered?
+It's because of align-items: center; . Because the cross axis is now the horizontal line and remember that align-items is the
+prop that controls the positioning or in better words alignment of items, along the CROSS axis.
+So it's really crucial to keep track of where the main and cross axis are currently situated, in order to use the justify-content and
+align-items in the correct way.
+When flex-direction is column, if you set justify-content to center, the items along the main axis which in that case is going
+from top to bottom, are centered. */
+/* 4. A basic intro to flexbox - flex items:
+align-self, overrides the align-items prop for one individual item. So right now, the align-items is set to center, so all of the
+items are centered along the cross axis, cross axis currently is from top to bottom. But if you want to override align-items for
+one individual item, let's say for the fourth item, let's give it a class of .i4 and in that class, we set align-self to flex-end.
+So now all of the items, except that one, are aligned to the center of cross axis.
+
+When you say: align-items: stretch; for all of the items or align-self: stretch; for individual item, those or that items, will
+stretch in order to fill the entire container along the cross axis. Also when one item is set to stretch and another one is set
+to flex-end(for their align-self props), the one that is flex-end will go where that stretch ends there.
+
+The initial value of order is 0 and if you want to put one of the items at the beginning, all we need to do is to put a value lower
+than 0. But why is that?
+Flexbox orders all of those items according to their order number and flexbox starts ordering items from the lowest order number the
+item with lowest order, goes to the beginning. Also the highest order goes to the end. This order prop is handy for responsive design,
+
+Learn: flex-grow is the ability of an item to grow and for it's value, we specify an integer. When you say: flex-grow: 1; , now all
+ of the items occupy the entire space that they can. Or in other words, they grow as much as they can. So now they're occupying
+ all the space that they possibly can.
+If those items haven't any margins, at least the inner margins, so now they're actually TOUCHING one another, again because they
+occupy all the space that they can and that's what flex-grow does. Now if we set all of the items an order prop even with a higher
+number than 1, it doesn't really matter, because the value of order prop only matters in RELATION to other numbers of flex-grow in
+other items.
+Important: So if we set flex-grow for all of the items to 1 and then set the flex-grow for one item to 2, that item with flex-grow
+ of 2 is now DOUBLE the SIZE of other items which have flex-grow of 1 and that's because 2 is double of 1. So that item has twice
+ the ability to grow than the other items which have flex-grow of 1. But those items with flex-grow: 1; would still grow as much
+ as they can but they are 2 times smaller than the item with flex-grow of 2.
+ So the flex-grow is relative to size of the flex item.
+
+Also there's a shorten prop which stands for flex-grow, flex-shrink and flex-basis, which that shorten prop is called flex.
+So saying flex-grow: 1; is the same as saying: flex: 1;
+So a simple trick to expand a flex-item to occupy as much width as it can, is simply setting it's flex prop to 1.
+
+Learn: By using flex-basis, we can set the width of a flex item. So instead of using the width prop on a flex item, we usually use
+ flex-basis. EX) flex-basis: 20%; on a flex-item means it's width is 20% of width of the flex-container then the other flex-items
+ (if they don't have flex-basis or width property set for them, or if they have, the value of those props set to auto) have their
+ flex-basis set to auto, which is the initial value for flex-basis and by having flex-basis: auto; or width: auto; on flex-items,
+ they occupy the space that they need and if a flex-item has a flex: 1; the remaining space is occupied by that item.
+
+flex-shrink: When the width of viewport decreases, if an item has flex-basis: 1; , it becomes smaller and smaller. That's because
+it has less and less space that it occupies, so it becomes smaller. Now if you further decrease the width of viewport, if a flex
+item has a flex-basis set to for example 300px which is a static width, you see that element also gets smaller.
+So even if we set the flex-basis of an item to 300px, in other words, we set the width to 300px, it still starts decreasing, when
+there's no more available space for that item, so it also gets smaller like when we set an item to flex: 1; . But the difference is
+in case of flex-basis: 300px; the width of that item is static but when instead it has flex: 1; it's width is dynamic and gets all of
+the available space.
+
+When the width of viewport gets too small, there's 2 scenarios. 1 is gets smaller and the 2 is it gets completely cut off.
+We can change that getting smaller(and make it getting COMPLETELY cut when it can't afford it's width of content and therefore that
+item completely cut off, when there's no space) behavior, by using flex-shrink, because
+flex-shrink controls how an element can shrink and flex-shrink has the initial value of 1 and 1 means the item is allowed
+to shrink and that's why in those 2 prior cases we see the element starts getting smaller and smaller when when there's
+no available space(for static width prop) and also gets smaller from the beginning of decreasing the viewport width in the
+dynamic case(when the item has flex: 1;).
+Now if we don't want that getting smaller to happen, we set it's flex-shrink to 0. Now those items get clipped, right? NOOO!
+Actually viewport increases it's width by getting a scrollbar in order to fit those show us ALL of the items, even the items
+that are currently cut of and we can see them only by scrolling(so basically we would have overflowing of those items out of their
+flex container).
+So by using flex-shrink, that item doesn't change it's width because it's not allowed to shrink.
+
+The good practice is to use flex shorthand prop instead of flex-basis, flex-shrink or ... and USUALLY we want elements to actually
+be able to shrink. Because we don't want that situation where the elements no longer fit the container(why don't fit the container?
+Because their width don't change by changing the width of viewport). */
+/* 5. A basic intro to flexbox - Adding more flex items:
+Now if you add a whole lot of items into existing items, they are now getting CRAMPED into ONE LINE and if we decrease the width
+of viewport, then there's even less and less space available for items and at last at some point, they even start overflowing from
+the flex container. But there's another prop that we can use on flex container and it's flex-wrap and it's initial value is nowrap
+and that's because the container is not wrapping into a new line, but if we say: flex-wrap: wrap; , then it will create a new line
+for the flex items that no longer fit their container into one line. Now if you decrease the viewport, you see more and more items
+come down to the next lines which is created as the flex items start to wrap. This can be pretty useful for responsive design, when
+we get less and less space to work with it, in our layouts.
+
+If you set an explicit high height for the container and if you got more than one row for items to wrap the container, you see that
+there's quite a vertical space between LINES(rows of container). Why?
+That's because of align-content prop that we can set on container. Now if you set align-content to flex-start, you see all of
+the rows(why rows? Because we must have multiple rows to see that effect of having lot of vertical space) move up and that's
+because what align-content prop does, is it allows rows along the cross axis. So it's pretty similar to align-items with the
+difference that align-items, align the flex ITEMS(not rows), but align-content, align rows(affect the entire layout of that
+container) along the cross axis.
+Now because of align-content: flex-start; , the rows are stick to the beginning of cross axis and therefore all of the vertical
+space that we have because of setting a high explicit height is empty. Also by setting align-content: flex-end; all of the
+rows go to end of cross axis and we would have vertical space on top of them because of setting a high height in this case.
+
+By suing align-content: center; ,the rows are centered along cross axis inside their flex container and that vertical space is
+distributed between top and bottom space of group of rows. So align-content: center; make rows centered along cross axis.
+
+align-content: space-around; distributes the space between rows so the space on the top and bottom of each of the rows is equal.
+So just like justify-content: space-around;
+
+align-content: space-between; pushes one of the rows to top(stick to top(when flex-direction: row;) or better say, to the
+BEGINNING of cross axis) of the container and the last(by default) row to the end of cross axis.
+
+align-content: stretch; is the default(so if you don't set it explicitely, it's there, implicitely). But in this case(in
+align-content prop), the stretch value doesn't really all of the items like it does in align-items. It just stretches the ROWS,
+which is not really visible. So this is pretty similar to align-content: space-between;
+So align-content controls how the rows are aligned along the cross axis, similar to align-items which is for individual items, but
+align-content is for rows of a container.
+
+In package,json, I copied the scripts from last project but because we don't have the icon-font in this project, so there's not
+really anything to concatenate, so I deleted concat:css script.
+Also the input file for compile:sass is style.comp.css not style.concat.css , so I changed that too. So the build process in this
+project is a bit smaller than the one in the previous project.
+Also in build:css , we don't have the second step which was concat:sass , so I removed it from build:sass script.
+
+We could also delete concat package completely from this project but I didn't do that.
+
+So the build process is: compile, prefix and then compress.
+
+7. Defining project settings and custom properties:
+- How and why to use CSS custom properties instead of sass variables
+
+In this project, we're not gonna focus on architecture and therefore we just wanna create 3 very simple files, one for base
+settings, one for the overall layout of the app and one for our smaller components.  */
+
+
+
+
+
+
+
