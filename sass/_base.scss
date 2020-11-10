@@ -1,0 +1,74 @@
+:root {
+  --color-primary: #eb2f64;
+  --color-primary-light: #FF3366;
+  --color-primary-dark: #BA265D;
+
+  --color-grey-light-1: #faf9f9;
+  --color-grey-light-2: #f4f2f2;
+  --color-grey-light-3: #f0eeee;
+  --color-grey-light-4: #ccc;
+
+  --color-grey-dark-1: #333;
+
+  /* This color is a primary color for our texts all over the page. */
+  --color-grey-dark-2: #777;
+  --color-grey-dark-3: #999;
+
+  --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, .3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+body {
+  /* We included this Open Sans font-family in our html too and if that one fails, so if for some reason the browser couldn't
+  load Open Sans from google fonts(that's where we're including it from), then we simply tell the browser to us a sans-serif
+  font instead.
+
+  After setting the background-image on the body, you see that it's actually weird. It's like the background is repeating
+  line by line. Why?
+  Because CURRENTLY we only have a text inside our <body> element and therefore the body element has only 16px height.
+  So from there(where that tiny trello text lives), the background starts repeating down. So we have that background of
+  body element, over and over again, repeated. That's the default in css but we can remove that, by writing:
+  background-repeat: no-repeat;
+  Now, the background is only really on the body element itself just as we specified and not repeating in the areas that
+  the body element is not there. Why I said in areas that ... ?
+  Because in the beginning, the body only had 16px and it wasn't contain all of the page, but before using background-repeat,
+  that background was reapeting all the way down, till cover the entire viewport, so it was reapeting in the places that
+  even the body element wasn't there at all. So we used background-repeat: no-repeat; .
+
+  But now, we have a 16px height body element with it's gradient background and rest of the page is blank which by default is
+  white. So for now, let's increase the height of body to cover the entire viewport height(100vh), but later we're going to
+  remove that, when the body element becomes larger(because if the height wasn't explicitely specified, the height of that
+  element would be the height of it's content.).
+  But we can also do it differently. We can use min-height, so the minimum of height of body would be 100vh, but if the
+  height of body can be bigger than that, well, then it will simply that number which is larger than the specified min-height.
+  But if the actual height would be smaller than 100vh, body would get that minimum height not that smaller height.
+  Learn: So with min-height: x; , the height of that element CAN be bigger than that x value, but it would NEVER be smaller
+   than x value. NEVER smaller!
+
+  With these background-size: cover and background-repeat: no-repeat; and that min-height: 100vh; we would get a nice
+  without repeating background, even if the content of body isn't enough to make the height of the body takes entire page.
+  So even if we have a tiny text in body, the height of body would be 100vh.
+
+  Now let's define the overall text-color. For that, let's define color prop on body selector.*/
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  background-image: linear-gradient(to right bottom, var(--color-primary-light), var(--color-primary-dark));
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  color: var(--color-grey-dark-2);
+}

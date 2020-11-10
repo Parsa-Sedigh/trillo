@@ -38,8 +38,7 @@ cross axis.
         |
         |
         |
-        ^
-CROSS AXIS
+    CROSS AXIS
 
 Notice: The x-y axis in css are exactly like the axises in flex-box. So in general css we have: ------>x
                                                                                                 |
@@ -303,9 +302,68 @@ So the build process is: compile, prefix and then compress.
 - How and why to use CSS custom properties instead of sass variables
 
 In this project, we're not gonna focus on architecture and therefore we just wanna create 3 very simple files, one for base
-settings, one for the overall layout of the app and one for our smaller components.  */
+settings, one for the overall layout of the app and one for our smaller components.
 
+For box-sizing, FIRST we set the box-sizing: border-box; in html selector and then we make EVERYTHING inherit this prop. So
+everything means the universal selector and also the ::after and ::before pseudo elements on universal selector.
 
+So all the elements, as well as all the ::before and ::after pseudo elements should then inherit the box-sizing.
+
+In this project, instead of using sass variables, we're gonna use CSS custom properties, which are better known as CSS variables.
+That means, we can actually right now use variables in css and don't have to rely on sass variables.
+
+But what's wrong with sass variables?
+First advantage of css variables is if you're just using sass for it's variables you wouldn't need it anymore.
+Second advantage is that css variables can be manipulated in JS and we can also edith them in our dev tools. Also it's easier
+to use css variables in the code function and also css variables cascade and they're inherited.
+So css variables are very different than sass variables.
+
+CSS custom properties have to be defined inside a scope or in other words, within a declaration block(declaration blocks those
+opening and closing curly brackets, so: <selector> {} .). Now, we COULD put those variables in any normal selector, like
+any selector that we want, but by doing that, those variables would ONLY be available in that element(s) that matche(s)
+that selector(which we defined those variables inside that selector) and it's children and that's what we want.
+
+Moreover, it's easier to ONLY have one CENTRAL place where we collect all of the variables in one place and that place is
+usually :root pseudo class and that :root is essentially like the same thing as html selector but with a higher specifity.
+By putting all of our variables there, they will be accessible throughout the entire document, because that's what the root
+of the document is. It's like the global parent element and therefore all the variables we declare there, will be available to
+all the child elements.
+
+So custom properties are very similar to a normal css prop. EX) We have margin: 0; and in custom props, we have --<>: ...;
+The only difference is we use -- in order to distinguish between our custom props and a normal built-in css prop.
+
+So now let's define :root{} on top of * selector.
+
+For defining a gradient, we use the background-image prop and then probably, we use the background-size prop. */
+/* 8. Building the overall layout:
+1) How to think about the overall layout of an app
+2) Use flexbox for a real world project for the first time
+
+First we have a huge container that holds the entire app interface and that container is nicely centered vertically and
+horizontally in the viewport. So that's the first element of the layout. Then in that container, first we have a header part.
+Then below that we have 2 big parts. The first one is the sidebar which has navigation in itself and a small legal text and
+in it's right, we have the hotel overview which is a huge block that contain those information about the hotel that we're
+currently watching.
+So those were 3 big parts inside the container. So the header on top, then the sidebar on the left and on right side we have
+a huge block which is for hotel view. So let's write them in html.
+
+In order to position those 2 sidebar and the hotel view which must sit next to each other, we actually need a container for
+them and let's call it content as it's class. So let's create <div class="content"></div> for their container.
+(I think we could make those 2 sidebar and hotel view sit next to each other without a container in normal css, but in
+flexbox, we need a flex container for them, because they're flex items for a common flex container.)
+So that <div class="content"> is the entire part below the header.
+Learn: For sidebar, we can use the <nav> element, because a sidebar mainly holds a navigation. So <nav> is the best elemnt
+ to convey that meaning to the element.
+Also for hotel-view we use the <main> element because it's the perfect element for that, because the <main> element is where
+the main part of website or web app goes and in this case, that main part of our page is hotel view, so we use <main> element
+for hotel view and that's our overall layout. So we have the container, then in it, the header and below it the content which
+in that content in it's left, we have the sidebar which has a navigation and on right side of content area, we have the
+hotel-view. Now let's go to layout.scss and style those classes.
+
+9) */
+@import "base";
+@import "layout";
+@import "components";
 
 
 

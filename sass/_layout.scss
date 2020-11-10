@@ -1,0 +1,76 @@
+/* We want .sidebar(which the navigation is in it) in the left side and .hotel-view on the right side and what is the
+perfect tool for doing that? Flexbox.
+In order to start using it, we need to set the display prop of flex container to flex. So I gave .content, display of flex.
+So .content would be the flex-container for .sidebar and .hotel-view , because .content is the one that HOLDS the two elements
+that we want them side by side(which are .sidebar and .hotel-view) and .sidebar and .hotel-view will be our 2 flex-items.
+
+Currently(after giving the .content or the flex-container a display of flex), it's flex-items would now sit NEXT TO EACH
+OTHER without setting any other props. So those flex-items are already side by side. Now let's set some props on individual
+items.
+For that, the .sidebar should have a width and in flex-box the property that we use to define width, is flex-basis prop.
+Important: We should always use that flex-basis inside the flex shorthand prop and not on it's own. So instead of using
+ flex-basis, we should use flex shorthand prop.
+The first value of flex prop, is flex-grow, but in this case for .sidebar , we don't want it to grow, besides the width that
+we're going to define, so I gave the first value of flex in .sidebar, 0. We also don't want it to shrink(the second value of
+flex, stands for flex-shrink and the next value is flex-basis.)
+
+When flex-grow or the first arg of flex is set to 0, it means we don't want that element to grow if there's some(available)
+space but in opposite if we set flex-shrink to 0, we don't want the element to shrink, if there's NOT ENOUGH SPACE(opposite).
+
+When you set the flex-basis or third value of flex to a percentage value, it's actually ok to ALSO write that we don't
+want that element to shrink because with that percentage width, it will automatically shrink, because it's width is
+a percentage, so it's not like pixel values. So in the case that we have pixel value for width of flex-item, it would be
+better to allow it to shrink, but in percentage case, it's good to not allow it.
+
+Now, the .sidebar is 18% width of it's container, but the .hotel-view is still very small. We want the .hotel-view to occupy
+the entire remaining width.
+Important: In other words (by using flexbox terms) we want it to grow as much as it can. So we give it flex: 1; . So again,
+ by using flex: 1; we say that the element should grow as much as it can to take the remaining space(if there's no other item
+ with flex-grow or higher flex-grow.)
+Now by setting that on .hotel-view, it will now grew all the way to the right side. Therefore it's occupying the remaining
+space of it's container which that remaining space is 82%.
+With that, the overall header is built.*/
+
+.container {
+  /* We used max-width instead of width on this container, with that, it CAN decrease if there's not enough space to show the
+  specified value for max-width. So it will show that 120rem, if there's enough space, but if it's not enough space, so if the
+  viewport is less than 120rem, then this class will occupy 100% of the available viewport width and that's what max-width
+  does.
+  So it's a common pattern, to use max-width of the direct childes of <body> which are our containers in general(like
+  <section>s that define a whole section of that page and ...).
+  Also we want to center it in the viewport(in general, it's parent)(why in the viewport? Because it's the direct
+  child of <body>.)
+
+  Also for testing purposes, let's define a min-width and with that we can take a look at our <div> which has this class on
+  it.
+
+  Also let's define a variable for this box-shadow because we might reuse this box-shadow in other places too and I named
+  that variable shadow-dark.*/
+  max-width: 120rem;
+  margin: 8rem auto;
+  background-color: var(--color-grey-light-1);
+  box-shadow: var(--shadow-dark);
+  min-height: 50rem;
+}
+
+.header {
+  height: 5rem;
+  background-color: #fff;
+  border-bottom: var(--color-grey-light-2);
+}
+
+.content {
+  display: flex;
+}
+
+.sidebar {
+  background-color: var(--color-grey-dark-1);
+  flex: 0 0 18%;
+}
+
+.hotel-view {
+  background-color: var(--color-grey-light-1);
+  flex: 1;
+}
+
+
