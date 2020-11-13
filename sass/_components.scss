@@ -1,0 +1,516 @@
+///////////////////////
+// LOGO
+.logo {
+  height: 3.25rem;
+  margin-left: 2rem;
+}
+
+///////////////////////
+// SEARCH
+/* We don't want this class to grow in order to fill all of it's available space.
+Important: The <input> elements don't AUTOMATICALLY inherit the font-family and font-size and the color of text of the global doc.
+ Therefore we have to manually set the font-family prop of an <input> element to inherit.
+ So if you have set some font related props for global doc, you need to MANUALLY set those props for <input> elements to make those
+ elements, inherit those props from global styles(those global font-related styles are coming from html and body selectors in _base.scss
+ file).
+ REMEMBER: When some prop is set to inherit, it will get it's value from nearest parent which has the prop. So in this case, because
+ the .header has defined font-size, therefore this .search class will inherit that value from it's parent and not the global styles,
+ because by default, the inherit props always get their values from nearest parent.
+
+Remember: The <input> elements have some border by default, so I removed them. Also we set the border-radius to a really high number and
+we can even set it in pixels, because it's really high therefore doesn't matter.
+Now we need to give that <input> a width but not 100%. Because we want that <input> to gets bigger when we :focus it and when we click
+outside, it goes back to it's original size which it had before the :focus. So let's set it's original width to 90%.
+So when the <input> element which has this class becomes focused, it's width increases from 90% to 100% of it's available width, so
+it would get 100% of it's container which it's container has 40% width of it's container which is <header> so that <input> will get
+40% width of <header>.
+
+Important: So <input>s as well as <button>s get an outline when they're focused.
+
+Important: In order to let some other elements go on top of an element, we can give that element some NEGATIVE margin in the
+ appropriate direction.
+So in this case we give the <input> some negative right margin in order the right element gets on top of that <input>. So by
+making the negative margin even more, the other elements will move towards that element with negative margin and finally can
+be able to get on top of that.
+Learn: So one way for moving an element to be on top of another element and also keep that on top element where it currently is and
+ not move when the screen gets smaller or bigger, is to give the under element a negative margin in right direction which makes the
+ other element comes on top of that element and their common parent must also have a dynamic width like percentage width in order
+ to shrink when the viewport width is going less and less and also the most big direct child of that parent must also have a percentage
+ width so with that, the element that is on top of the other, stays where it's currently is, just like what we did in search bar.
+
+remember: <button> elements by default have some border in their normal state, so we removed it. Also in their :focus state, they
+get an outline like the <input>s so I got rid of it for button too. Also I gave that button the same
+background color of the <input>, because we want that button to be like on top of <input>.
+
+Now we want to center the <button> in the <input>.
+
+Now we need to center that <svg> vertically inside it's parent, as well horizontally. So let's give .search display: flex;
+So now a flex-item becomes a flex-container itself.
+Important: When you set sth a flex-container, ONLY it's DIRECT children becomes flex-items not the children of those children. So we can
+ have nested flexbox.
+After setting .search to be a flex-container, you see that the button, is vertically centered because when sth is flex-container,
+it's align-items value by default is set to stretch. But let's make the items horizontally and vertically center too.
+
+Right now if the input is focused, you see that the background-color of the icon is slightly lighter than the background-color of
+the input. In other words, the background-colors of both input and button are the same when the input is not in :focus state. But
+when the input is in focus state, the background-color of input changes but for icon not. So we need to fix that. So let's select
+.search in :focus state then it's adjacent sibling element with + selector which is button. But if you said:
+&__input:focus &__button it wouldn't apply the styles you wrote, to the &__button, because &__button is not desendent of &__input but
+it's sibling and in better words, adjacent sibling, so we need to use + selector.
+
+For changing the color of a svg, we need to use fill prop.
+
+The placeholder of search input element must have lighter color and also the text that the user wrote in that input must have dark
+color. But currently our wrote text has light color, so we need to change that.
+
+Learn: When we write -webkit- in the beginning of a prop, it means it currently just working for webkit browsers which are
+ chrome and safari.
+
+So flexbox is perfect for small kind of situations where you have to do some simple alignments. So instead of messing with margins and
+transform: translate...(); props, floats and text-align, we just use flexbox. */
+.search {
+  flex: 0 0 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__input {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background-color: var(--color-grey-light-2);
+    border: none;
+    padding: .7rem 2rem;
+    border-radius: 10rem;
+    width: 90%;
+    transition: all .2s;
+    margin-right: -3.25rem;
+
+    &:focus {
+      outline: none;
+      width: 100%;
+      background-color: var(--color-grey-light-3);
+    }
+
+    &::-webkit-input-placeholder {
+      font-weight: 100;
+      color: var(--color-grey-light-4);
+    }
+  }
+
+  &__input:focus + &__button {
+    background-color: var(--color-grey-light-3);
+  }
+
+  &__button {
+    border: none;
+    background-color: var(--color-grey-light-2);
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      transform: translateY(.2rem);
+    }
+  }
+
+  &__icon {
+    height: 2rem;
+    width: 2rem;
+    fill: var(--color-grey-dark-3);
+  }
+}
+
+///////////////////////
+// USER NAVIGATION
+/* For .user-nav, once again we have the situation that we had with search bar before, where a flex item is ALSO AT THE SAME TIME,
+a flex container and it's pretty common. Now we need to center those items inside .user-nav along the cross axis.
+
+We want to give EACH flex items inside .user-nav some padding(we don't want to give the .user-nav itself some padding because that's
+useless in this case).
+Now we want some space between those items, but where? Between those 2 user-nav__icon-box classes and user-nav__user, now we COULD go ahead and
+group those 2 .user-nav__icon-box and .user-nav__user at the same time in order to make a selector for them at the same time, but
+we can use direct child selector then universal selector to select ALL of the DIRECT children of .user-nav . Because we only
+want to select the DIRECT children of .user-nav so we used the direct child selector instead of desendent selector. So if we used
+& * {} (using desendent selector), ten ALL of the elements that are inside .user-nav will get padding(direct and children of those
+direct children and then children of those and ...!), but with using direct child selector we only target the DIRECT children of
+.user-nav .
+Important: When you want to target direct children of an element, you have 2 options: 1) Create another <div> to group all of the
+ direct children of that element and then give the styles you wanted to give to all of the direct children of that element, to that
+ newly created <div>. OR 2) Without adding html, you can use direct child selector then universal selector to get ALL of the direct
+ children of that element.
+
+Currently the height of .user-nav is given by height of .user-nav__user because .user-nav__user has more height than other children
+of .user-nav and we also didn't set any height for .user-nav . But that's not what we want. We want the .user-nav to fill the
+entire vertical space from beginning of header to the end of it and there's a flexbox prop for that which is align-self which is like
+align-items but for ONE INDIVIDUAL flex item.
+Important: So one use case of align-self is to override align-items prop for one or more individual items.
+
+Learn: So when you want a flex item gets all of the available space in cross axis direction, you can set it's align-self to stretch.
+ So one use case is for make the height of an item to it's possible maximum value, just like what we did here.
+Why we gave .user-nav align-self of stretch?
+Remember that in header we set the align-items to center and that's why the 3 elements which are logo, search bar and the user-nav
+are vertically centered(cross axis is vertical in this case), but in fact WE DON'T WANT the user-nav to be vertically centered. So
+we override the align-items in .user-nav , by using align-self.
+Now we need to fix the fact that when we hover on items inside .user-nav , the background-color of hovered element is not going
+all the way from top to bottom is to then set the height of all of those items to 100%.
+RECAP: We wanted the items of .user-nav gets all of the height of header. So first we used align-self: stretch; on the .user-nav itself and
+then gave height: 100% to all of the DIRECT children of .user-nav .
+Now we got a problem which is the icon and text inside those direct children of .user-nav , are all the way at top of their parent.
+So let's go to &__icon-box and first set it to be a flex-container then use align-items: center; to center it's flex items to center,
+which cross axis USUALLY is vertically. Now you see that we are already at THIRD level of initial flex container. So the header is a
+flex container, then the .user-nav and then the icon-box itself is a flex container itself. This is actually ok. Now let's go to
+&__user to also do the same. But it would be duplicate. So instead of putting display: flex; and align-items in &__icon-box, we can
+put them in & > * .*/
+.user-nav {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+
+  & > * {
+    padding: 0 2rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      background-color: var(--color-grey-light-2);
+    }
+  }
+
+  &__icon-box {
+    position: relative;
+  }
+
+  &__icon {
+    height: 2.25rem;
+    width: 2.25rem;
+    fill: var(--color-grey-dark-2);
+  }
+
+  /* We need to position this element on top of the icon. This time it's not good to use flexbox, because it doesn't really give us
+  a way to PERFECTLY position an element exactly where we want it, but instead here we can use absolute positioning, so we also
+  need to set a reference for this absolute positioning, otherwise it would get the nearest positioned PARENT for it's reference.
+  So let's give &__icon-box a relative position.
+
+  Now we need to center the text inside this __notification both horizontally and vertically and we can use flexbox here too.
+  But the &__notification doesn't have any child, it is okay to make it a flex container and ... ? Yes:
+  Important: So flexbox doesn't only work when we have child elements, but it works with text as well. So when we have an element
+   that inside itself has some text, we can center that text both horizontally and vertically inside that element by using display: flex;
+   on container of that text and by using justify-content: center; the text of that element would be horizontally(because flex-direction by
+   default is set to row) centered.
+  So let's give this class a display of flex.
+  Now we have 4 levels of flexbox, one inside of another. So an item itself is a flex-container too.
+
+  Now maybe you see that the second notification element isn't really a circle unlike the first one and I think that's because of
+  the text inside the second one where that text is larger than the first text. So we shouldn't use border-radius: 50%; here, but instead
+  a very high number, just like what we did in search bar. But I think 50% is a cleaner solution.
+
+  So you see that &__user and the &__user-name aren't really need because for first one, we styled it in & > * .
+
+  Currently you see that the space between the &__user-name and the right edge of header is not the space between left of logo and
+  left edge of header. So let's change margin-left of .logo to 2rem.
+
+  Also you can set the top prop of &__notification to a lower value(the values are copied from tutor.)*/
+  &__notification {
+    font-size: .8rem;
+    height: 1.75rem;
+    width: 1.75rem;
+    border-radius: 50%; // OR 10rem
+    background-color: var(--color-primary);
+    color: #fff;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__user {}
+
+  &__user-photo {
+    height: 3.75rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+
+  &__user-name {}
+}
+
+///////////////////////
+// SIDE NAVIGATION
+.side-nav {
+  font-size: 1.4rem;
+  list-style: none;
+  margin-top: 3.5rem;
+
+  &__item {
+    position: relative;
+
+    &:not(:last-child) {
+      margin-bottom: .5rem;
+    }
+
+    /* What is scaleY()?
+    Usually when we use scale(), the element scales in all of the directions, so X AND Y. But if we do scaleY(), then the scale only
+    occurs in Y direction(it will start from middle to top and bottom-it starts from middle, because that's where the transform-origin is
+    set).
+    Currently if you hover on the item, you see that the ::before pseudo element starts from the MIDDLE and then grows to top and
+    bottom(the Y directions)- because we're using scaleY().
+    The default value of transform-origin is center, but if we set it to bottom, the scaleY() will start from bottom of element that
+    we define that prop for it and then goes to the top till the value that we defined in () of scaleY(). So in this case because we
+    set scaleY(1), the element scales from very bottom(because the transform-origin is set to bottom) and then go ALL THE WAY up to
+    reach the element's top, because the scaleY(1) means scale in Y directions(top and bottom) till very end of that direction. So
+    scaleY(1) means scale to take all of the HEIGHT of the element, so it kinda means scaleY(100%).
+
+    Now we want when we hover the item, we want the width of before pseudo element goes from .3rem to 100% width of the item list.
+    Also we need to add a delay to width. Because if we don't the width will expand immediately(because in transition we didn't include
+    width prop or we didn't add a delay to see it) and then you'll see it's scalingY. So the width INSTANTLY goes from .3rem to 100% and
+    THEN it will scale-because currently the width isn't included in transition or delay.
+    So there's an ability in transition prop to add different settings for different props. So for transform let's put .2s and for
+    width we say we want it to happen in .4s and also with a delay and that delay is .2s which is the exact time that it takes for
+    the first transform to happen.
+    Learn: So in transition, in order to do an animation AFTER the another one, we set the delay for the next one which the value of that
+     delay is exact as the values of all of the before props in that transition.
+     EX) We want c prop to happen AFTER a and b were completed:
+     transition: a Xs,
+                 b Ys,
+                 c Zs (X + Y)s  ----> The (X + Y) is true, WHEN all of the before props are for the current trasntion state, not for
+                                      other state. What this means? Means YOU CAN have other props as values of transition in between of
+                                      these a or b or c, but those props don't trigger when we're doing this sequence of a, THEN b THEN c.
+                                      So you might have d prop in between of b and c, but that d prop doesn't to do with the sequence that
+                                      we have between a and b and c. So you can add other pros between this sequence that we have between
+                                      a, b and c. Why we can do that? Because those props don't CHANGED in those states that a, b and c
+                                      was changed.
+                                      So whenever you have some props that changed in 2 states(normal and x state), those will have a
+                                      sequence between each other and we can delay them and make them take place only the earlier one
+                                      finishes and ... . But other props that are in that transition prop, BUT they don't change in those
+                                      states, well, they don't effect the sequence between other pros that change between 2 certain states.
+                                      For example in our code, the background-color which is present in transition prop, don't affect the
+                                      delays or the sequence that we have between transform and width props which these 2 props change
+                                      from normal state to :hover state, even if you took that background-color prop, in between those 2 other
+                                      props in transition prop, again it won't affect the sequence that we have between transform and width,
+                                      which that sequence is whenever the transform finishes, we would have a delay, then the width will transit
+                                      between the normal state and hover state, but background-color isn't CHANGE in transition between normal
+                                      state and hover state. Therefore it won't affect that sequence between transform and width props.
+                                      Also remember that when you have some props that change between 2 states, the order of them is crucial.
+                                      So in this case, we first transit or animate the transition of transform prop and THEN animate the
+                                      width prop(again, if there are some other props that don't change between those states, they won't affect
+                                      the order of other sequences).
+     So the pattern for waiting the next transition to happen until the earlier one is completed is:
+     a <length of transition> <cubic-bezier>  <length of delay from the beginning of all transitions>
+     b <length of transition> <cubic-bezier> <length of delay from the beginning of all transitions>
+     ...
+     So as you can see we can also delay even the first prop that's going to transition.
+    So in our case in transition, first the transform happens which makes .2s to happen and finishes and we wait that time until the
+    transition of width starts to happening which that transition takes .4s .
+
+    Also we want to start slow and then acceralates real fast and then we slow down again at the end so we need some timing functions,
+    which we can get those functions from cubic-bezier.com site.
+
+    Now one thing we have to fix, is that the list item should be on top of the before pseudo element but currently it's vice versa.
+    So let's give the &__link itself some z-index. Also you see that after giving a higher z-index to &__link it doesn't work and still
+    the ::before pseudo element of &__link would be on top of that &__link when we hover. That's because we need to specify a position
+    for &__link in order to make it's z-index work actually. So let's give &__link a position relative, which hasn't side effects if we
+    gave it absolute.
+
+    Important: z-index on an element or one of it's states only works, if it has specified position.
+
+    Now we need to make the first &__link to already be hovered on it by default. For that let's give that element a modifier and give
+    the styles that we want to it's before pseudo element of that modifier(you could also set those styles for the modifier itself, BUT
+    because we set those background and ... on the ::before pseudo element of all of the items, including the first item, we gave those
+    styles to pseudo element of that first item and not the modifier class itself but you can do that as well.)
+
+    Also we want to animate the :active state, so when we transit from normal state to :active state, it should be in animated way.
+    So let's go to transition prop in normal state and inside it's ::before pseudo element and add backgroundc-color*/
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: .3rem;
+      background-color: var(--color-primary);
+      transform: scaleY(0);
+      transition: transform .2s,
+                  width .4s cubic-bezier(1, 0, 0, 1) .2s,
+                  background-color .1s;
+    }
+
+    &:hover::before {
+      transform: scaleY(1);
+      width: 100%;
+    }
+
+    &--active::before {
+      transform: scaleY(1);
+      width: 100%;
+    }
+
+    &:active::before {
+      background-color: var(--color-primary-light);
+    }
+  }
+
+  &__link:link, &__link:visited {
+    /* This text color shouldn't be completely white, so we gave it a light grey. Because it's better than pure white on such
+    a dark background.
+
+    We want the color of &__icon which is set on svg icons, to be the same color as the &__link, so we COULD go ahead and just
+    COPY the var(--color-grey-light-1); and paste it for fill prop of &__icon, but we can do better by using sth called: currentColor.
+    Learn: currentColor is just the color of current element or parent element and this value is very well supported by many browsers.
+     So when you use currentColor in &__icon, the current element is <svg class="side-nav__icon"> and it's parent is
+     <a href="#" class="side-nav__link"> . So for example if you set the color prop in &__icon to blue and then you used currentColor
+     for fill prop in &__icon, then the icon will become blue. Because the currentColor in that case is blue.
+    Another application of currentColor is that we had a hover effect in this &__link which is the parent element of where we used the
+    currentColor value and set the color in that hover to orange. Then the currentColor value in &__icon would be orange.
+    So by using currentColor in &__icon, without writing another css selector that says when the &__link gets hover, the color of
+    &__icon should be what, we implemented that effect by just setting a color prop in hover state of &__link .
+    So with currentColor we avoid to write that code.
+
+    Currently if you watch closely to &__icons, you see that they're aren't well aligned. For example the map svg icon is not vertically
+    centered with the text in front of it(the text in <span>). So we can use flexbox for that alignment and what's the flexbox container
+    there?
+    We know that the &__icon and the <svg> must be vertically aligned and therefore our flex container in that case is .side-nav__link .
+    Now the icon and text are vertically aligned inside their flex container.
+
+    For the :hover effect we're going to use a ::before pseudo element which we basically place before the list item and that's the
+    one that will show AS SOON AS we hover the item. So it will show and then grow to the right side. So that ::before pseudo element
+    that we define for &__item, would be a small line that becomes visible instantly and then expands to the right side of &__item.
+    So let's define a ::before pseudo element on the &__item.
+    Important: Always we have to specify the content prop for pseudo elements. Otherwise that pseudo element wouldn't even show in the
+     browser. So even the value of content is nothing, you MUST set it.
+    In this case, in order to position that pseudo element, let's use absolute position and also I gave that pseudo element a height of
+    100%, so it has exactly the same height as the list item. After that we have to set a reference for that absolute position and
+    in that case it's parent is the best suitable reference. So let's give the &__item a relative position. So now the pseudo element is
+    positioned in relation to &__item. */
+    color: var(--color-grey-light-1);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 1.5rem 3rem;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+  }
+
+/* Important: As you can see unlike the images, we specify BOTH of width and height for <svg> elements. Because they can get
+    whatever size we want, but images have some ratios, therefore we only specify one of width or height for them, so the other one
+    gets auto value by default and figures out by browser.
+Usually we size the svgs as squares so we explicitely need to set the BOTH of width and height.
+
+Now let's set the .content height to pretend that there's already a lot of content there. For testing purposes.
+
+The legal text must be pushed all the way to the bottom. So how we can create a lot of space between the legal text and .side-nav, so
+the legal text is pushed all the way to the bottom?
+justify-content set to space-between sounds good? But that works along the main axis, but main axis is from left to right so we can
+use flex-direction. So let's first make the .sidebar a flex container.
+Now by just saying flex-direction: column; nothing really changed visually. But we're ready to use justify-content: space-between;
+and with that, the last item is pushed all the way to bottom, while the first item stays at the top and that's because:
+Learn: In justify-content between: flexbox divides all the available whitespace between the items and there wouldn't outer
+ space in space-between and in this case there are only 2 elements, so one is pushed to one side and other one to another side.
+So we wanted each of those 2 items in a different corner so we used justify-content: space-between;
+My note: align-items doesn't have space-between or ... . So the way for making an item pushed all the way to BOTTOM is to set
+flex-direction to column and then use justify-content: space-between;*/
+  &__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-right: 2rem;
+    fill: currentColor;
+  }
+}
+
+///////////////////////
+// LEGAL TEXT(it's not a component actually- but we don't focus on architucture here)
+.legal {
+  font-size: 1.2rem;
+  color: var(--color-grey-light-4);
+  text-align: center;
+  padding: 2.5rem;
+}
+
+///////////////////////
+// GALLERY
+/* In responsive design, we always want flexible images. So we always have to define a width OR a height(not both-just one of them) in
+PERCENTAGE, so the image stays fluid. So I gave &__photo a percentage based width instead of pixel based. BY GIVING WIDTH: 100%; TO
+<img> elements, the height of those images will be calculated by browser. Currently if you look at the height of &__photo, it's not
+100% of height of <figure> and it's normal. Because the browser actually give it the height and maybe it wouldn't be 100%. Because
+by setting ONE of width or height, the browser needs to keep the aspect ratio.
+Important: Actually the problem that I mentioned above, is because, by default the <img>s have a really small space underneath themselves and
+ that's because the height of our images weren't 100% of height of <figure>s. The solution is to make those images, block elements and not
+ inline(default value for images) or inline-block. But that would make the images take all of their line. Actually if the DIRECT container
+ of some children, has display: flex; and even if those direct children of that flex container have display: block; they'll sit side by
+ side.
+ So by default(images are inline elements) <img>s have a small space underneath themselves.
+So the width of figure or height of figure, wouldn't be usually equal to width or height of <img>, until you explicitely set both of
+those props.
+Then for put the <figure> elements side by side, we give .gallery display of flex and then all of the items of that flex-container will
+be automatically side by side.
+Important: If the DIRECT container of a block element, has display: flex; , even if those items are block level elements, they will be sit
+ side by side.
+You could make these images sit side by side, by giving them a width of 33.33% in this case and then use floats on <figure> elements and
+then use clearfix on the PARENT of those floated elements. Why float on <figure>s make them side by side?
+Well that's what float do. It will make block elements side by side, if there's enough space for them. Also for this, you could make
+<figure>s, inline-block for make them sit side by side.
+Learn: floats OR display: inline-block will make block elements, side by side, if there's enough space(using display: inline-block
+ is better, because when using floats, you need to clear them individually or use clearfix hack on their DIRECT COMMON parent).
+ Also floats are used for push sth to end of left or right edge of it's parent.*/
+.gallery {
+  display: flex;
+
+  &__photo {
+    width: 100%;
+    display: block;
+  }
+}
+
+///////////////////////
+// HOTEL OVERVIEW
+/* By using space-between:
+1) We have no outer spaces(if you set margins for first and last items, that's sth else!)
+2) The first and last items are pushed all the way to edges of container.
+3) The remaining(except first and last items) items are centered between first and last items(which those 2 items are at the edge of their
+container-actually their DIRECT flex container) and between those items are equal space so space-between will evenly distribute all the
+space between all the flex items along the MAIN axis.
+
+But we want the starts icon, close to the heading and the location close to the rating. So it would be a huge space in the middle of
+the those 2 groups. Therefore justify-content is not a good way of doing that. Because it doesn't allow us to create a space ONLY
+between 2 of 4 items. So I removed that.
+Instead we can use flex: 1; prop on &__stars. So that means that flex item should grow and occupy all of the available space.
+Important: When you set flex: 1; on one of the middle items, all of the remaining items will be pushed to the other edge of their
+ flex container. Just like what we did with &__stars.
+ But in this case, this ALSO isn't ideal. Because the &__stars is now occupying the entire space and that space is also it's width.
+ So it isn't ideal. Because that element which has got flex: 1; SHOULD ONLY BE THE SIZE OF IT'S CONTENT. So in this case, it must ONLY
+ have the size of it's starts and NOT ALL OF THAT ENTIRE SPACE. We don't want it to have all of that size which is because of that
+ flex: 1; . WHY we don't want that?
+Imagine that we would have a hover effect on that item and then ALL OF that entire item would be hovered(in other words, gets the
+hover state) and would change the background.
+So what we want, is a way to create that space TODO till 13.40*/
+.overview {
+  display: flex;
+
+  &__heading {}
+
+  &__stars {
+    flex: 1;
+  }
+
+  /* As you can see, in this project we always gave both height and width props to svg icons with equal values. */
+  &__icon-star,
+  &__icon-location {
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: var(--color-primary);
+  }
+
+  &__location {}
+
+  &__rating {}
+
+  &__rating-count {}
+
+  &__rating-average {}
+}
+

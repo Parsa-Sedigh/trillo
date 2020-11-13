@@ -360,7 +360,147 @@ for hotel view and that's our overall layout. So we have the container, then in 
 in that content in it's left, we have the sidebar which has a navigation and on right side of content area, we have the
 hotel-view. Now let's go to layout.scss and style those classes.
 
-9) */
+9. Building the header - Part 1:
+1) Why to use svg icons vs font icons(so why it's better to use svg images as icons instead of an icon font)
+2) How to find, generate and use svg sprites in HTML
+3) How to change the color of an svg icon in css
+4) How to use more advanced flexbox alignment techniques, including justify-content, align-items, align-self and flex
+
+In our header we basically have 3 main components, we have the logo, then we have the search bar with the input field and the
+search icon and then on the right, we have sth that we can call it user navigation. In that user navigation, we have like
+bookmarks, a chat functionality and the name of the user. So the 3 main components in heade are logo, search bar and user
+navigation.
+
+For the search bar we used the form element and that search icon is a <button> element and inside that <button>, we have the
+magnifying icon.
+In natours project, we used icon FONTS, but this time we're gonna use SVGs AS ICONS. Why we're moving away from icon fonts
+to svgs?
+Well there are several problems with icon fonts. First one is that they're really just a HACK to display icons which are like
+images using a font. Also icon fonts fail more often than you would think and if they fail, the browser just displays a
+blank square or sth like that on the screen and that's terrible and there are actually other issues like screen readers for
+blind people trying to read the icon fonts and of course, failing to do so and because of all that, right now it's considered
+a best practice to move away from icon fonts and use SVGs. Now what's svg actually?
+SVG stands for scalable vector graphics and it's a way of writing vector graphics with code. But we don't write any svg code
+here, instead, we can use an app called icoMoon.io. In that site, you can upload an icon font if you want and it will convert it
+to SVG. But you can also select some icons from their free library. In this project we used Entypo+. After selecting your icons,
+select svg & more then click prefences, there, you can uncheck PNG because we didn't need PNGs, we just needed svg icons and
+you can see in left bottom and on top of download button, you see it's svg. So hit download button. In the downloaded folder,
+we just need the svg files which are in SVG folder and more importantly, we need symbol-defs.svg and that file is called
+sprite file. So what's a sprite file?
+It's an SVG file which contains all of those selected svg images from icomoons, in it. So that's the one that we're gonna
+actually use. Because this way, we only have to use ONE GLOBAL file, which is the symbol-defs.svg file and from there, we can
+select each of the icons and so this way, we only have ONE http request for ONE file instead of having to include all of those
+10 different icon files.
+Learn: So icon sprites, like the symbol-defs.svg file, is the way to go and professional do that.
+Also we have a html file when download from icomoons called demo.html which by opening it, we can see the names
+of the icons that we can use them in html file of our website.
+
+Now for using the downloaded icons, grab SVG folder and sprite file and move them to img folder and you can rename the
+symbol-defs.svg file to sprite.svg .(Also I deleted the sprite file that I originally cloned from the course repo and just
+renamed OUR symbol-defs.svg file to sprite.svg .) Also I left that SVG folder with those initial svg files in it, there,
+because maybe we'll need one of them later. Now we're ready to use the sprite.svg file.
+
+Now how we include an svg icon? We use <svg> element and I used it inside the <button> element. Then inside <svg> we have
+to use the <use> and on that, an attr called xlink:href .
+So that's how we can include an svg file and then reference each separate icon in there. So we reference the sprite file for
+xlink:href attr and also the svg icon that you want to use there and you can see the name of the icon in demo.html file.
+For specifying the name of svg icon in the sprite file, we use # sign after the name of the sprite file and it's extension which
+is svg. So:
+<use xlink:href="<path to sprite file and then name of that file>#<name of svg icon without the svg extension>"></use>
+
+Remember: In the beginning of name of svg icon, we have the prefix class which we can change it in prefences when we are
+downloading those selected icons.
+
+So that was the best way to include svg files in HTML, by using svg sprite files. Why it's best way?
+Because that way, we can actually change the color of each of the icons using css.
+
+Using(including them in html files) svg files with the xlink:href attr, is only gonna work on a web server. So ONLY on a
+web server you'll be able to see that sprite svg file, but since we ARE actually using a web server(currently in development
+we're using a LOCAL web server- the localhost server), that's why we can see those icons. But those svg icons currently are
+not styled at all.
+Another advantage of svg, is that it makes it really easy to style those svg icons. But with font based icons, it's always
+really hard to put them exactly the way we want it.
+
+For user navigation I used the <nav> html5 element and in that <anv> element, we'll put 3 boxes, which those boxes are <div>
+elements.
+Also we want a notification indicator on top left corner of some of svgs, for that I used an <span> element next to where we
+defined <svg> elements for icons.
+
+After writing html, the images and svg icons are very huge so let's style them quickly. So let's go to components.scss file.
+In this project, we put all of the styles of each component in just 1 file which is components.scss .
+So let's quickly give some height prop for our images and(it's not good to give height AND width to an image-so we specified only the
+height prop for that image) ... .
+
+How we style an svg icon?(for sizing styles)
+It's really easy, compared to font icons. All we have to do is to set the <svg>'s height and width in order to size it the way we
+want.
+Important: For the logo which is an <img> element we didn't use BOTH width and height, but for the svgs, we did.
+
+We can make an <img> circle, by giving it a border-radius: 50%;*/
+/* 10. Building the header - Part 2:
+First let's put those 3 elements that we have inside <header>, side by side. How do we do that?
+We use flexbox. Now what should be the flex container in that case(the header)?
+Well, it should be the parent element of the elements that we want them to be side by side. Those elements that we want them be
+side by side are the logo, the search bar and the user navigation and the parent of those elements is the <header> element. So
+let's set the display of .header to flex and that will put the children of that element, side by side.
+
+Now we want the .user-nav to go all the way to the right side and then the search bar in the middle. So we need to use justify-content
+which align the ITEMS along the MAIN axis. We need space-between for it's value and it will divide the empty space between those 3
+elements. So we used space-between because with this value, it won't put space on outer spaces and we just want a LITTLE space in
+outer elements(the left of first item and right of last item) with a little margin and not from the result of space-around, which
+would put a lot of space in outer spaces.
+Now we also want to align those 3 elements along the cross axis and with that alignment, for example we would have the
+logo nicely centered in the header along the cross axis which currently is from top to bottom. If we didn't use flexbox, we could
+use margin-top and then we have to EXPERIMENT which value is the perfect margin?
+Important: So one of the things that we can do for vertical alignment of some elements is to give them a margin-top and play with
+ it's value(Possibly we can give another <div> for grouping those elements inside their container and give a margin-top to that
+ <div> instead of giving that margin-top to each of those items. So that <div> would be the direct child of the original <div> which
+ we wanted to align vertically the items of that original <div> inside it, therefore we grouped those items with another <div>).
+ But with flexbox, we can use align-items in this case.
+After doing that, we see that the .user-nav is overflowing from the flex container which is the <header> and that's because
+there's too much content inside that .user-nav and therefore the height of that item is more than the SPECIFIED height of the
+container and therefore it overflows but it's vertically centered anyways.
+In before the align-items was set to stretch(the default value) so you saw that the search bar was occupying the entire space from
+top to bottom. Now let's style each of those items.
+
+For giving a width or ... to a flex item, we should use the flex shorthand prop, instead of using width prop or ... .
+
+11. Building the header - Part 3:
+The first thing we need to do about the 3 elements in .user-nav, is to make them side by side. So we need to make their parent
+which is .user-nav, a flex container. */
+/* 12. Building the navigation - Part 1:
+1) How to use scaleY() and multiple transition properties with different settings, to create a creative hover effect
+2) How and why to use currentColor css variable
+3) How to use more advanced flexbox alignment techniques, including flex-direction, justify-content and align-items
+
+The best way of including svg in html is the way we did it. Which is by only including ONE FILE(which is the sprite.svg file instead
+of including multiple svg files of svg icons-so we have ONE file that has all of our svg icons). So for our icons, we included only
+one file multiple times. So that is the SAME FILE, therefore we only would have ONE HTTP request for all of those svgs. So that's the
+whole goal of having a sprite image.
+
+Remember: After writing the html markup for <svg> elements and before style and sizing them, you may see that they're huge on the page.
+But you can size them in css.
+
+Also after writing the html for sidebar, you see that the hotel-view is stretched all the way until the bottom of it's container.
+Because we're using flexbox and since the default value of align-items is stretch, well, they will both stretch all the way they can along
+the cross axis. So when you increase the height of one of the items, AUTOMATICALLY(because the align-items is set to stretch) the height
+of other items increase as much as that too. So all of the items have the same height and actually the height of the container is equal
+to height of the highest item(because we didn't set any height for container). Usually that's the behavior that we want.(All of the items
+have the same height.)
+
+By setting flex-direction other value than the default, you change the direction of MAIN axis.
+
+13. Building the navigation - Part 2:
+Learn: The first parent of a pseudo element like ::before is actually the element that we set that pseudo element on it.
+ So if you set a pseudo element on <li> , that <li> is the direct parent of that pseudo element.
+
+14. Building the Hotel Overview - Part 1:
+1) How to create an infinite animation
+2) How to use margin: auto; with flexbox and why it's so powerful
+3) Continue to use flexbox properties for easy positioning and alignment
+
+In .gallery we wrap each of the images in a <figure> element, so we can later add a <figcaption> element there, in order to give those
+images a caption. */
 @import "base";
 @import "layout";
 @import "components";
