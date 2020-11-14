@@ -500,7 +500,10 @@ Learn: The first parent of a pseudo element like ::before is actually the elemen
 3) Continue to use flexbox properties for easy positioning and alignment
 
 In .gallery we wrap each of the images in a <figure> element, so we can later add a <figcaption> element there, in order to give those
-images a caption. */
+images a caption.
+
+15. Building the Hotel Overview - Part 2:
+*/
 @import "base";
 @import "layout";
 @import "components";

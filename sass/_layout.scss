@@ -56,7 +56,7 @@ With that, the overall header is built.*/
 .header {
   height: 5rem;
   background-color: #fff;
-  border-bottom: var(--color-grey-light-2);
+  border-bottom: .1rem solid var(--color-grey-light-2);
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -485,16 +485,47 @@ Important: When you set flex: 1; on one of the middle items, all of the remainin
  So it isn't ideal. Because that element which has got flex: 1; SHOULD ONLY BE THE SIZE OF IT'S CONTENT. So in this case, it must ONLY
  have the size of it's starts and NOT ALL OF THAT ENTIRE SPACE. We don't want it to have all of that size which is because of that
  flex: 1; . WHY we don't want that?
-Imagine that we would have a hover effect on that item and then ALL OF that entire item would be hovered(in other words, gets the
-hover state) and would change the background.
-So what we want, is a way to create that space TODO till 13.40*/
+ Imagine that we would have a hover effect on that item and then ALL OF that entire item would be hovered(in other words, gets the
+ hover state) and would change the background.
+ So what we want, is a way to create that space without stretching that element for creating that space. So we can use
+ margin-<the direction you want to create that empty space without stretching the element which causes the width of element to become
+ very large>: auto; instead of flex: 1;
+Sp with margin: auto; instead of flex: 1; , we get the same result but our element actually occupying the space that it needs(equal
+to it's content width and padding) and all of that empty space is the automatically calculated margin.
+Also in this case, you could use margin-left: auto; on &__location.*/
 .overview {
   display: flex;
+  align-items: center;
+  border-bottom: .1rem solid var(--color-grey-light-2);
 
-  &__heading {}
+  &__heading {
+    font-size: 2.25rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+    padding: 1.5rem 3rem;
+  }
 
+  /* For some reason after giving the .overview, align-items: center; , the &__starts are not really 100% vertically aligned.
+  But when you inspect &__stars, you see that the flex item(the <div class=overview__stars>) itself is vertically aligned, but the
+  <svg> element inside that flex item isn't vertically aligned inside it's container and that's normal. Because:
+  Important: When an element become a flex item, this behavior doesn't inherit by it's children. So it's children don't become an item of
+   container of their container. Or in other words, when an element become flex container, ONLY IT'S DIRECT CHILDREN become flex item,
+   not it's grand children or children of it's grand children and ... .
+  Learn: <svg> elements by default are inline, therefore they have a small space below them like <img> elements and in this case that
+   small space is 4px. Because the height of &__stars is currently 17.5px, but the height of their container is 21.5px and we didn't
+   set any height for that container or some padding for &__stars.
+   So the text which is by default inline, has some white space below it. Solutions:
+   1) We got rid of that space by making those inline elements, block level. Even display: inline-block; wouldn't solve it.
+   2) Also another solution is to set the line-height and font-size OF THE CONTAINER OF THOSE INLINE ELEMENTS to 0.
+   3) OR we can also set that CONTAINER to a flexbox container and that weird space will be gone. So now you see that parent element
+   which now is a flex container(if you choose the third solution), has the exact same height as it's inline children(if you didn't set
+   any padding for that flex container).
+  So now that some reason that I mentioned is this weird space underneath inline elements. */
   &__stars {
-    flex: 1;
+    //flex: 1; NOT GOOD AT ALL
+    margin-right: auto;
+    display: flex;
   }
 
   /* As you can see, in this project we always gave both height and width props to svg icons with equal values. */
@@ -512,5 +543,44 @@ So what we want, is a way to create that space TODO till 13.40*/
   &__rating-count {}
 
   &__rating-average {}
+}
+
+///////////////////////
+// INLINE BUTTON
+/* <button> elements by default have some border.
+Why I set font-size to inherit?
+With this technique, you can set a font-size on the parent element of this .btn-inline and then set the font-size to inherit on this
+class to get that font-size. So with this, when you use this class in multiple places, you just need to set the font-size of parent
+of this class without actually creating multiple classes or modifiers for this class or other dirty stuff, just for changing the
+font-size of this class.
+So by setting font-size to inherit and not a static value, this class becomes a bit modular and more reusable.
+
+By using currentColor in border, it has the exact same color as the text of button. Because we have set a color prop for this element,
+therefore currentColor will get that color.
+When some props of a class have set their value to currentColor, if even the state of that class changes and we set a new color
+Important: prop in that state, all of the props that are using currentColor and are defined in that state that we're currently in it
+ OR EVEN the props that are defined OUTSIDE of that state will also change their values(because the color of element has changed).
+ In other words, when the state of a class changes and if we set a new color in that state, all of the props of that class which are
+ using currentColor will change their values. So in this example, when the class gets hover state, the color of border-bottom changes,
+ EVEN we set a color prop in normal state. WHY? Because the state is changed and we're not in the normal state anymore, so if we set
+ the color prop in new state, that would actually get applied to whole class, not the color of old state. So currentColor also takes
+ out some duplicate code for different states. So without currentColor on border-bottom, we have to change the color of border-bottom
+ in :hover state too! But with currentColor, it will dynamically change.
+By using background-color to transparent, we make this class more modular. Because with transparent, the background-color of behind the
+button can be seen and if we change that back background-color, the background-color of button is also kinda changed right?
+So we don't need to change the background-color of this class in multiple places that it has been used. TODO till 6:30*/
+.btn-inline {
+  border: none;
+  color: var(--color-primary);
+  font-size: inherit;
+  border-bottom: .1rem solid currentColor;
+  padding-bottom: .2rem;
+  display: inline-block;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-grey-dark-1);
+  }
 }
 
