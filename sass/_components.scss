@@ -496,7 +496,7 @@ Also in this case, you could use margin-left: auto; on &__location.*/
 .overview {
   display: flex;
   align-items: center;
-  border-bottom: .1rem solid var(--color-grey-light-2);
+  border-bottom: var(--line);
 
   &__heading {
     font-size: 2.25rem;
@@ -536,13 +536,47 @@ Also in this case, you could use margin-left: auto; on &__location.*/
     fill: var(--color-primary);
   }
 
-  &__location {}
+  &__location {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+  }
 
-  &__rating {}
+  &__icon-location {
+    margin-right: .5rem;
+  }
 
-  &__rating-count {}
+  &__rating {
+    background-color: var(--color-primary);
+    margin-left: 3rem;
+    color: #fff;
 
-  &__rating-average {}
+    /* We wanted this element to take all of the height(because flex-direction in this case is in it's default value which is row)
+    of it's parent, but in it's parent we set align-items to center. So we needed to use align-self prop for this class, to ONLY make
+    this class in other words, we OVERRIDE the align-items prop that we set on it's parent, by using align-self prop. */
+    align-self: stretch;
+    padding: 0 2.25rem;
+
+    /* By using display: flex; on this class, the DIRECT children of this class will be side by side by default, but we don't want this.
+    So we need the items of this flex container to be on top of each other and not side by side. But we can change that. So we used 
+    flex-direction and set it to column. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  &__rating-count {
+    font-size: .8rem;
+    text-transform: uppercase;
+  }
+
+  &__rating-average {
+    font-size: 2.25rem;
+    font-weight: 300;
+    /* I wanted to decrease the space between the element that has this class and the element under it. So I used a negative margin-bottom.*/
+    margin-bottom: -.3rem;
+  }
 }
 
 ///////////////////////
@@ -568,7 +602,14 @@ Important: prop in that state, all of the props that are using currentColor and 
  in :hover state too! But with currentColor, it will dynamically change.
 By using background-color to transparent, we make this class more modular. Because with transparent, the background-color of behind the
 button can be seen and if we change that back background-color, the background-color of button is also kinda changed right?
-So we don't need to change the background-color of this class in multiple places that it has been used. TODO till 6:30*/
+So we don't need to change the background-color of this class in multiple places that it has been used.
+
+Now we want to have an effect which this class beats like heart beat(pulsating animation) when the btn-inline is in :focus state.
+So we must use @Keyframes. Why?
+Important: Because we have no way of doing that, by using only a transition animation. So we must use @Keyframes.
+<button> elements get a default black border when they get focused. So I removed that in :focus. 
+
+*/
 .btn-inline {
   border: none;
   color: var(--color-primary);
@@ -578,9 +619,47 @@ So we don't need to change the background-color of this class in multiple places
   display: inline-block;
   background-color: transparent;
   cursor: pointer;
+  transition: all .2s;
 
   &:hover {
     color: var(--color-grey-dark-1);
+  }
+
+  &:focus {
+    outline: none;
+    animation: pulsate 1s infinite;
+  }
+}
+
+/* In the beginning of this animation, nothing happens. Then in the middle of animation, the element scales up a little bit and also
+have a shadow and in the end, it goes back to normal. 
+Important: If a state of animation is normal state(doesn't apply any more styles to the class or id that it's used on),
+ you need to set the styles which during that animation has changed, to their default value. For example you need to set
+ scale() to scale(1); or box-shadow to none and ... .
+
+In scale(x), if we specify a number for x which is < 1, it will make the element smaller.
+
+After giving the animation name and time of animation to animation prop and check it on browser, you see that it happens
+only ONCE. But we want that animation to happen infinite. So we need to add infinite keyword. With that, as long as the
+class has this state, that animation would happen.
+
+Also remember, because we set that animation on focus state of this class, if you focused on the class and again do it,
+that class won't get the focus state again! Because you need to first click elsewhere in order to remove that focus state
+from class and again click on the element that has this class, to see the animation. */
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 1rem 4rem rgba(0, 0, 0, .25);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: none;
   }
 }
 

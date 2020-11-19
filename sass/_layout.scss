@@ -56,7 +56,7 @@ With that, the overall header is built.*/
 .header {
   height: 5rem;
   background-color: #fff;
-  border-bottom: .1rem solid var(--color-grey-light-2);
+  border-bottom: var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,9 +76,32 @@ With that, the overall header is built.*/
 }
 
 .hotel-view {
-  background-color: var(--color-grey-light-1);
+  background-color: #fff;
   flex: 1;
   height: 80rem;
+}
+
+/* We wanted the .description and .user-reviews to be side by side, therefore I used display: flex; on their DIRECT container.
+I wanted .description to have 60% of the available width, so we can use flex prop and we don't want it to grow or shrink. So we can say:
+Learn: Usually when we we use percentage value for flex-basis or width of a flex-item, we set flex-grow and flex-shrink to 0.
+In .user-reviews, we want to take the REMAINING space. Therefore it's width would be equal to whatever available width there is.
+So we need to give it the ability of grow, therefore we don't need to give it a flex-basis value, because it can grow.
+
+Notice that the padding in .detail container is the same as the right margin of .description.  */
+.detail {
+  display: flex;
+  padding: 4.5rem;
+  background-color: var(--color-grey-light-1);
+  border-bottom: var(--line);
+}
+
+.description {
+  flex: 0 0 60%;
+  margin-right: 4.5rem;
+}
+
+.user-reviews {
+  flex: 1;
 }
 
 
