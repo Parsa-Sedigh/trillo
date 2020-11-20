@@ -78,7 +78,6 @@ With that, the overall header is built.*/
 .hotel-view {
   background-color: #fff;
   flex: 1;
-  height: 80rem;
 }
 
 /* We wanted the .description and .user-reviews to be side by side, therefore I used display: flex; on their DIRECT container.
@@ -87,7 +86,20 @@ Learn: Usually when we we use percentage value for flex-basis or width of a flex
 In .user-reviews, we want to take the REMAINING space. Therefore it's width would be equal to whatever available width there is.
 So we need to give it the ability of grow, therefore we don't need to give it a flex-basis value, because it can grow.
 
-Notice that the padding in .detail container is the same as the right margin of .description.  */
+Notice that the padding in .detail container is always(why always? Because we used a fixed value but this is true, if you don't write any
+media query...) the same as the right margin of .description.
+
+We made that .description bigger by giving it some padding. But after that, you see that the other item which is .user-reviews already
+grew to have the same size as the .description item and that's because the align-items prop by default is set to stretch. Therefore other items
+stretched to have the same size along the cross axis(if the flex-direction is set to row-which is by default).
+Important: So when you see that by making one flex-item bigger in cross axis, the other items also grew that much, it's probably because
+ the align-items by default is set to stretch.
+
+First let's set an overall font-size of the .description and by doing that, most of the elements will inherit that font-size.
+
+After filling the .description with it's content, you see that element is too big and overflow the .hotel-view. That's because
+we set a fixed height on the .hotel-view . So I removed that height of .hotel-view, because we want it's content to define
+the height of .hotel-view and not by setting a fixed height for it.*/
 .detail {
   display: flex;
   padding: 4.5rem;
@@ -98,6 +110,10 @@ Notice that the padding in .detail container is the same as the right margin of 
 .description {
   flex: 0 0 60%;
   margin-right: 4.5rem;
+  background-color: #fff;
+  box-shadow: var(--shadow-light);
+  padding: 3rem;
+  font-size: 1.4rem;
 }
 
 .user-reviews {

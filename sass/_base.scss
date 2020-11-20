@@ -15,6 +15,7 @@
   --color-grey-dark-3: #999;
 
   --shadow-dark: 0 2rem 6rem rgba(0, 0, 0, .3);
+  --shadow-light: 0 2rem 5rem rgba(0, 0, 0, .06);
 
   --line: .1rem solid var(--color-grey-light-1);
 }
@@ -47,7 +48,7 @@ body {
   Now, the background is only really on the body element itself just as we specified and not repeating in the areas that
   the body element is not there. Why I said in areas that ... ?
   Because in the beginning, the body only had 16px and it wasn't contain all of the page, but before using background-repeat,
-  that background was reapeting all the way down, till cover the entire viewport, so it was reapeting in the places that
+  that background was repeating all the way down, till cover the entire viewport, so it was reapeting in the places that
   even the body element wasn't there at all. So we used background-repeat: no-repeat; .
 
   But now, we have a 16px height body element with it's gradient background and rest of the page is blank which by default is
@@ -71,6 +72,9 @@ body {
   background-image: linear-gradient(to right bottom, var(--color-primary-light), var(--color-primary-dark));
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100vh;
+
+  /* Instead of using height, we used min-height, so if the content of body overflows it, the body will also expand to
+   fit all of it's content inside it. But if you were set a fixed-height, the content of body can overflow */
+  min-height: 100vh;
   color: var(--color-grey-dark-2);
 }

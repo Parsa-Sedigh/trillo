@@ -602,14 +602,13 @@ Important: prop in that state, all of the props that are using currentColor and 
  in :hover state too! But with currentColor, it will dynamically change.
 By using background-color to transparent, we make this class more modular. Because with transparent, the background-color of behind the
 button can be seen and if we change that back background-color, the background-color of button is also kinda changed right?
-So we don't need to change the background-color of this class in multiple places that it has been used.
+So we don't need to change the background-color of this class in multiple places that it has been used. Therefore I didn't set a
+fixed background-color for this class.
 
 Now we want to have an effect which this class beats like heart beat(pulsating animation) when the btn-inline is in :focus state.
 So we must use @Keyframes. Why?
 Important: Because we have no way of doing that, by using only a transition animation. So we must use @Keyframes.
-<button> elements get a default black border when they get focused. So I removed that in :focus. 
-
-*/
+<button> elements get a default black border when they get focused. So I removed that in :focus. */
 .btn-inline {
   border: none;
   color: var(--color-primary);
@@ -663,3 +662,172 @@ from class and again click on the element that has this class, to see the animat
   }
 }
 
+///////////////////////
+// PARAGRAPH
+/* If you use :last-child here, all of the elements with .paragraph in our html will get this style. Why?
+Because the last <p class="paragraph"> that we have in our html is not the last CHILD of their container. So it actually
+get this style. So we must use :last-of-type.*/
+.paragraph {
+  &:not(:last-of-type) {
+    margin-bottom: 2rem;
+  }
+}
+
+///////////////////////
+// LIST
+.list {
+  list-style: none;
+  margin: 3rem 0;
+  padding: 3rem 0;
+  border-top: var(--line);
+  border-bottom: var(--line);
+  display: flex;
+  /* We need to allow the items of this flex container to be able to wrap to new lines. So let's use flex-wrap and set it to
+  wrap. With that, now the items are side by side but if there's not enough space in one line, they will go to the next line and
+  again sit side by side. Instead of CRAM into ONE line of container(which is the default behavior of a flex container).
+
+  Important: We can give each of the .list-items a fixed width and after that, they will all look the same because they will all have
+   the same width.
+  So let's give them the same width, but we're not gonna use the width prop for their width, but instead, the flex prop, because they're
+  flex items. So again we use a percentage value for width but without any flex-grow and flex-shrink.
+  Now we want 2 &__item s to be side by side. So I gave each of them a width of 50%.
+
+  Now we need to add our svg icons to each of the &__items. BUT this time I don't wanna use or include them in HTML code, because
+  I don't wanna have to use 8 svg elements in the html. Instead we can use or include those icons, right in the css.
+  Now in css it's really difficult to use a sprite image(or svg) like we did in the html. So that sprite file that we have in img folder,
+  which has all of our icons is what we used in the html. But in css, it's much easier to use the single icon itself and since we want to
+  use only one icon here, therefore ONE svg FILE, it's really no difference to include just the icon ITSELF or just the sprite image.
+  Because we only want to use one icon here.
+  So when you want to include only one svg file in css, you can use the separate svg file of that icon instead of including the sprite
+  file into the css and that's what we did. We downloaded the chevron-thin-right.svg file which is ONE file for a single icon and not a file
+  which has multiple icons in itself and that chevron-thin-right.svg file came from the svg folder and we copied that svg file
+  from that folder, into img folder.
+
+  svg is a way to write vector icons or any vector image, in code and sprite file has the code of all of the icons in itself.
+
+  Now how do we include an svg file in our css or scss?
+  It's very similar to any other regular image and the easiest way is to use a background-image prop and we use that in a
+  ::before pseudo element. So basically BEFORE each of the &__item elements we create a small pseudo element which will have
+  that background-image and that's a better practice than putting it directly on the &__item.
+  Important: When you're using scss and want to include sth like a file into this svg file(so basically want to point towards
+   a file into the project folders), you HAVE TO ASSUME YOU'RE IN THE COMPILED FILE OF THAT SCSS FILE which is the css file and
+   you should not think you're ACTUALLY in where you're currently are! For example here, we want to include a file in this svg
+   file, but we shouldn't write a relative path from this file towards where that svg file exists!NO! We must think we're in the
+   compiled file of this scss files, which that compiled file lives in the css folder. So we ACTUALLY need to think we're in
+   the css folder and in style.css file and then we can define the path to that svg file from there.
+   So when you want to include sth into scss file, you need to think you're actually in the compile file and then provide
+   the path towards the file you want to include in that css file.
+
+   Now if you look at the webpage, you don't see those icons. Because we always have to specify the content prop for pseudo
+   elements. If you again see the webpage, you don't see the icons, before their width is currently 0. So because
+   inline elements don't get width or height, first we need to make them inline-block or block and then give them height
+   or width(Also if that inline element is an svg icon, it's good to set BOTH height and width of them).
+
+   There's a problem with this approach. Because if we include svgs as background-image, then we have no way of changing the
+   color of those svgs. So if you don't have a problem with that, then we can of course go ahead and make it like that. But
+   in our case, we want to make that svg pink color.
+   So we need to use a different approach than include it by using background-image in pseudo elements and that approach will
+   include masks again in a pseudo element.
+   Also remember that the first approach is for older browsers. Because the next approach uses masks and masks only work
+   in modern browsers. So for older browsers we can use background-image. Also in the first approach since we should also
+   set the background-size to cover.
+
+   So I commented out the props for first approach but later we will add a feature query that says if the mask prop is supported,
+   then use the mask and if not, use the background-image(and background-size).
+
+   The second approach which uses mask is the best one. What is a mask?
+   Learn: A mask defines an area where we can look through the element and see what's behind the element(in this case, the
+    element is &__item::before). So in the second approach, we set the background-color of this element(before pseudo element)
+    to a solid color and then use the icon as the mask and with that, we can look through that mask(icon in this case)
+    and see the background-color in the area where the icon exists and everything else is covered, so everything just gonna
+    be white(in this case).
+   So in this case, after setting background-color of &::before to primary color, now we need to actually include our icon which
+   in this case is the mask(yes include it, because we commented it out) and we need to put it ON TOP of this background-color
+   and only in the positions where the icon(mask) is, we will be able to look thorough that mask and see that pink background-color and
+   the rest will be covered. So it's basically a bit like clipping.
+
+   The mask-image prop currently only works in webkit browsers. So we have to use the -webkit- prefix and then we have to include the
+   svg file that we want to use.
+   The mask-size prop is very similar to background-size and when we set it to cover, the icon covers the entire element.
+
+   After setting that mask prop, the entire pink square that we had before using this mask prop, is still there, but we now only
+   see that square in the places where the mask allows us to see through it and those places is exactly where the icon(mask) is located.
+
+   The icon is larger than than 1rem(icon is 20x20) which that 1rem is the size of the place where the icon should sit in our page. So
+   without using the mask-size prop, we can't see the whole icon because that icon is larger than the size of the place that it sits currently and
+   therefore some parts of it would be cut. So we need to use mask-size prop, because the svgs may be larger than their place in our page and
+   by setting mask-size: cover; it solves that issue.
+   Important: So this was the solution that solves the problem which was with background-image, we can't change the color in css.
+   Now we can remove that prefix, because I think all of the browsers implemented this. Now later we need to make the first solution
+   gets active for older browsers which don't support the masks.  */
+  flex-wrap: wrap;
+
+  &__item {
+    flex: 0 0 50%;
+    margin-bottom: .7rem;
+
+    &::before {
+      // Including an svg icon for older browsers by using background-image:
+      /* Let's assume we're in the compiled file of this css file: */
+      //background-image: url("../img/chevron-thin-right.svg");
+      //background-size: cover;
+      content: "";
+      display: inline-block;
+      height: 1rem;
+      width: 1rem;
+
+      margin-right: .7rem;
+
+      // For newer browsers - masks:
+      background-color: var(--color-primary);
+      mask-image: url("../img/chevron-thin-right.svg");
+      mask-size: cover;
+    }
+  }
+}
+
+///////////////////////
+// RECOMMEND
+/* We want to make the &__photo elements slightly overlap each other and we can do that by giving them a negative margin-right.
+For example if you give one of them a negative margin-right, that makes the other elements in the right of that element to move TOWARDS to that
+element which has the negative right margin and therefore it will overlap with the other image in it's right. So all of them
+should have a negative right margin except the last one. Also we can give them a nice border and when they're on top of each other(in this
+case!), that border will show itself nicely. But after giving them that 3px border, we see they become smaller. Why? Because by adding border,
+it will added to the height of the element and therefore some part of height of element would be that border and therefore the parts of height
+and width of the element which was taken by the actual image, would get smaller because of added border or in other words, in order to cram
+that border into the height and width(why both height and width? Because well the border gets added to all of the rounds of the element).
+Important: Because the border doesn't make the element smaller by taking it's width or sth else. That's because it goes INTO those images.
+ We have 2 options to fix that. We can add those 3px of border on the height AND width, OR, we can do it automatically and we can do that
+ automatically by using box-sizing prop.
+ What box-sizing: border-box; does, is that it includes the padding and the border into the width and height of the element and that's
+ usually what we want. So when the box-sizing of an element is set to border-box we can say:
+ width = content + vertical padding + vertical border and height = ...
+ But in this situation we don't want that. In this situation we want the border to be ADDED on top of our height and the width(so the
+ border won't calculated in width and height of element). Therefore we can set it back to default value(content-box). Now if you take out of
+ border of element, the height of element would be the same because of box-sizing; content-box;. */
+.recommend {
+  font-size: 1.3rem;
+  color: var(--color-grey-dark-3);
+  display: flex;
+  align-items: center;
+
+  /* By using margin-right: auto; on this class, the right margin of class would take remaining space of the available space and therefore
+   it will push all of the right items to the right edge of container(but the width of this class wouldn't get bigger). */
+  &__count {
+    margin-right: auto;
+  }
+
+  &__friends {}
+
+  &__photo {
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-sizing: content-box;
+
+    &:not(:last-child) {
+      margin-right: -1.5rem;
+    }
+  }
+}

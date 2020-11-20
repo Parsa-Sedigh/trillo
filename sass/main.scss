@@ -509,6 +509,11 @@ images a caption.
 1) Continue to use flexbox, including flex-wrap to build a multi-column list
 2) How and why to use css masks with mask-image and mask-size
 
+17. Building the Description Section - Part 2:
+Important: As I mentioned, we usually just give a height or just a width to an <img>, but when we want to make it circle, we give
+ it both height and width with equal values and border-radius of 50%. Like what we did in .recommend__photo .
+
+18. Building the User Reviews Section - Part 1:
 */
 @import "base";
 @import "layout";
