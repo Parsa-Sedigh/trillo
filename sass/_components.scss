@@ -618,15 +618,31 @@ Important: Because we have no way of doing that, by using only a transition anim
   display: inline-block;
   background-color: transparent;
   cursor: pointer;
-  transition: all .2s;
+  transition: all 1s;
 
   &:hover {
     color: var(--color-grey-dark-1);
+
+    /* As soon as we hover this class, then the <span> which is inside that element should increase it's margin-left.
+    Currently if you hover on the button, you see that, FIRST, this margin animation happens and only THEN the color of <span> which is
+    inside <button> changes and that's weird and that's because we're already having a transition on the ALL props of paren element
+    of the <span> and we're still adding another transition in that <span> which is the child of that <button> and therefore the time of
+    changing the color of <span> is more than what we expected. So Important: Always be careful with multiple transitions on both the parent
+                                                                    of an element and also the child of that element, which causes the
+                                                                    TODO till 19:20 */
+    span {
+      margin-left: .8rem;
+    }
   }
 
   &:focus {
     outline: none;
     animation: pulsate 1s infinite;
+  }
+
+  & span {
+    margin-left: .3rem;
+    transition: all 2s;
   }
 }
 
@@ -829,5 +845,107 @@ Important: Because the border doesn't make the element smaller by taking it's wi
     &:not(:last-child) {
       margin-right: -1.5rem;
     }
+  }
+}
+
+///////////////////////
+// REVIEWS
+/* Crucial technique: We COULD define font-size on each of the elements inside the .review box, but it's better to define it on their
+parent element, so usually all of the texts inside that container can inherit that font-size on parent. So we need to define the font-size on
+the most top and possible(because maybe that parent has other children that we don't want ALL of those children have the same font-size,
+so we must choose the most grandparent but with cautios) parent element in order to avoid duplicates and therefore the child elements
+inherit that. So instead of having font-size defined on both .user-reviews and .description, let's define that in .detail.
+So in that case, we say the .detail should have 1.4 font-size which that class is used on the container of both .description and
+.user-reviews .
+
+We need to create a quotation sign by using ::before pseudo element. So not with html, but just with css and the content of that pseudo element
+is NOT empty! but instead we want to write that quotation mark in that content prop, therefore we need to use one of the special symbols
+like an html entity. But it works slightly differently in css than html(in html like: &nbsp;). So let's go to glyphs reference in
+css-tricks site.
+So for example the difference between quotation mark in html than in css is that in html we specify that special &ldquo; (which ldquo means
+left double quotes or quotation) but in css we use it different, because we use the ISO number(ISOnum) and the ISO number for double quotation marks
+is "\201C" and we use it like: content:"\201C";
+Learn: So as you saw, we can place the ISOnum of html entities in content prop of pseudo elements, similar how we used them in html, but in css,
+ with ISOnum.
+Now by specifying that content prop for double quotation marks we can actually see it in our page.
+Now we need to position that ::before pseudo element, right in the corner of the element which that pseudo element is a direct child of that
+element.Learn: So we can use absolute positioning on pseudo elements, in order to position them within their direct parents(the parent that we
+         specify that pseudo element for it.) . So that parent that we defined pseudo element for it, should get the position: relative;.
+
+After positioning that pseudo element, you see it's not in the place that we were expected(it's in the bottom of the place that we expected).
+Why?
+Because currently it's HUGE, therefore it's not where want it to be(actually it's in that place, but because it's way huge, the actual content is
+not where we wanted) and that being huge is because of the line-height of that pseudo element, so we should set that line-height to 1 or 0.
+Also the look of that double quotation mark is not what we want, so let's set a font-family for that pseudo element which is where the actual
+quotation mark lives. Because right now, it's inheriting our Open-Sans font and therefore as you see, it doesn't look really good. So let's just
+use the default font of the browser which is sans-serif and by decreasing the line-height to 1, the height of that pseudo element, decreases.
+
+Currently, first problem that pseudo element is overflowing the .figure box, so it's moving outside of the box and the second problem is
+that it's on top of the text. So we can fix that with a z-index on a positioned element. So let's define a smaller font-size on the
+pseudo element and then on the &__text, a higher z-index and never forget that the z-index only works if the element is positioned(other than
+static-the default one) actually. So let's give &__text a relative position. Also for the first problem, we can set .review to have
+an overflow: hidden;, because that pseudo element is overflowing the .review , so .review must have overflow: hidden; in order to make
+the overflowed part invisible.*/
+.review {
+  background-color: #fff;
+  box-shadow: var(--shadow-light);
+  padding: 3rem;
+  margin-bottom: 3.5rem;
+  position: relative;
+  overflow: hidden;
+
+  &__text {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+  }
+
+  &__photo {
+    height: 4.5rem;
+    width: 4.5rem;
+    border-radius: 50%;
+    margin-right: 1.5rem;
+  }
+
+  /* As you can see, we don't nest elements into each other. For example here we didn't just select &__user {} and then nest
+  &-box and &-date and ..., because we don't nest elements inside each other, but we do nest elements inside blocks.*/
+  &__user-box {
+    /* We want to push &__rating all the way to right side, so I defined margin-right: auto; here.  */
+    margin-right: auto;
+  }
+
+  &__user-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+  }
+
+  &__user-date {
+    font-size: 1rem;
+    color: var(--color-grey-dark-3);
+  }
+
+  &__rating {
+    color: var(--color-primary);
+    font-size: 2.2rem;
+    /* The default font-weight in our page is 400, but here we need to overwrite it. */
+    font-weight: 300;
+  }
+
+  &::before {
+    content: "\201C";
+    position: absolute;
+    top: -2.75rem;
+    left: -1rem;
+    font-size: 20rem;
+    color: var(--color-grey-light-2);
+    font-family: sans-serif;
+    line-height: 1;
   }
 }

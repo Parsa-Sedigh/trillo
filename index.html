@@ -186,8 +186,55 @@
                     </div>
 
                     <div class="user-reviews">
-                        user reviews
+                        <!-- Each of these review boxes will be one review component.
+                        Learn: <figure> elements are perfect for reviews. But some people think that <figure>s are only for
+                         pictures or images, but that's not really true. <figure>s are great for some text and descriptions of
+                         the images and therefore <figure> is perfect here for our review box. So here I used a <figure> element
+                         instead of <div>.
+                        Also I used html5 <blockquote> element in the review box, because in fact a review is like a quote from a person.
+                        and <blockquote> is a perfect element for the TEXT of review of person which in this case we placed it inside <figure>.-->
+                        <figure class="review">
+                            <blockquote class="review__text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga doloremque architecto dicta animi,
+                                totam, itaque officia ex.
+                            </blockquote>
+                            <figcaption class="review__user">
+                                <img src="img/user-1.jpg" alt="User 1" class="review__photo">
+                                <div class="review__user-box">
+                                    <p class="review__user-name">Nick Smith</p>
+                                    <p class="review__user-date">Feb 23rd, 2020</p>
+                                </div>
+                                <div class="review__rating">
+                                   7.8
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="review">
+                            <blockquote class="review__text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga doloremque architecto dicta animi.
+                            </blockquote>
+                            <figcaption class="review__user">
+                                <img src="img/user-2.jpg" alt="User 2" class="review__photo">
+                                <div class="review__user-box">
+                                    <p class="review__user-name">Mary Thomas</p>
+                                    <p class="review__user-date">Sept 13th, 2020</p>
+                                </div>
+                                <div class="review__rating">
+                                    9.3
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <!-- As soon as we hover on the button, it creates a small space between it's text and the arrow next to it. So we need
+                        to add that arrow(or the text) in an <span> element and that's because we want to have that small animation which the
+                        space between the text of <button> and that arrow increases when we hover on the <button>(the text moves
+                        away from arrow or we can say vice versa!).
+
+                        &rarr; means right arrow-->
+                        <button class="btn-inline">Show all <span>&rarr;</span></button>
                     </div>
+
                 </div>
             </main>
         </div>

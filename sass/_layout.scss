@@ -99,12 +99,13 @@ First let's set an overall font-size of the .description and by doing that, most
 
 After filling the .description with it's content, you see that element is too big and overflow the .hotel-view. That's because
 we set a fixed height on the .hotel-view . So I removed that height of .hotel-view, because we want it's content to define
-the height of .hotel-view and not by setting a fixed height for it.*/
+the height of .hotel-view and not by setting a fixed height for it. */
 .detail {
   display: flex;
   padding: 4.5rem;
   background-color: var(--color-grey-light-1);
   border-bottom: var(--line);
+  font-size: 1.4rem;
 }
 
 .description {
@@ -113,7 +114,6 @@ the height of .hotel-view and not by setting a fixed height for it.*/
   background-color: #fff;
   box-shadow: var(--shadow-light);
   padding: 3rem;
-  font-size: 1.4rem;
 }
 
 .user-reviews {
