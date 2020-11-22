@@ -618,7 +618,7 @@ Important: Because we have no way of doing that, by using only a transition anim
   display: inline-block;
   background-color: transparent;
   cursor: pointer;
-  transition: all 1s;
+  transition: margin-left .2s;
 
   &:hover {
     color: var(--color-grey-dark-1);
@@ -628,10 +628,17 @@ Important: Because we have no way of doing that, by using only a transition anim
     inside <button> changes and that's weird and that's because we're already having a transition on the ALL props of paren element
     of the <span> and we're still adding another transition in that <span> which is the child of that <button> and therefore the time of
     changing the color of <span> is more than what we expected. So Important: Always be careful with multiple transitions on both the parent
-                                                                    of an element and also the child of that element, which causes the
-                                                                    TODO till 19:20 */
+                                                                    of an element when you give them both, a value of all for their transition props.
+    So I changed the all value in parent element to just the things I really want to animate, which in this case is margin-left prop of parent
+    element(although that weird behavior didn't happen in my machine).
+
+    Now we want to center that <button> inside it's container, so you might say, set text-align on container to center, but it's not a
+    good solution. Because with that, the button is centered, but ALSO all of the text(inline elements) inside that container are also centered
+    horizontally. Because that text-align is inherited by ALL(direct and indirect) of that container. So let's use flexbox. So let's
+    set the .user-reviews to be a flex container. TODO this weird is now HAPPENIGN WHY?????? also why pulsate on the new button doesn't work?*/
     span {
       margin-left: .8rem;
+
     }
   }
 
@@ -642,7 +649,7 @@ Important: Because we have no way of doing that, by using only a transition anim
 
   & span {
     margin-left: .3rem;
-    transition: all 2s;
+    transition: all .2s;
   }
 }
 

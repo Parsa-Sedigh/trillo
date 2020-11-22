@@ -118,6 +118,17 @@ the height of .hotel-view and not by setting a fixed height for it. */
 
 .user-reviews {
   flex: 1;
+
+  /* Important: The main axis currently is horizontal and therefore all of the flex items are sit next to each other along main axis, but
+      we don't want them to sit next to each other, we want those flex items to be ON TOP OF EACH OTHER(so let's set flex-direction to
+      column). With setting flex-direction to column, STILL THE FLEX ITEMS ARE ALONG THE MAIN AXIS, but the main axis is now VERTICAL and therfore
+      they're on top of each other(so we just change the orientaion of main axis not the behavior that the items sit along main axis!)
+      SO FOR MAKING THE FLEX ITEMS TO BE ONE AFTER THE ANOTHER, we can make the flex container to have flex-direction: column;
+     Now, after doing this, you see that the <button> has a huge border-bottom and that's (Important): because the align-items by default is set to
+     stretch(no matter of flex-direction value). So we can make align-items to center, in this case.*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
