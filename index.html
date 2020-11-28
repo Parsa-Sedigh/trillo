@@ -138,7 +138,7 @@
                 </div>
 
                 <!-- This <div class="detail"> , contains 2 columns(2 flexbox items). The first column which is the left one, is the description and
-                on the right side we have user reviews. These 3 classes: detail, description and user-reviews are concerned about layout and not 
+                on the right side we have user reviews. These 3 classes: detail, description and user-reviews are concerned about layout and not
                 components, so I styled them in layout file.
 
                 I named the class for the <p> element here, as paragraph and .list, because they're reusable components
@@ -234,7 +234,29 @@
                         &rarr; means right arrow-->
                         <button class="btn-inline">Show all <span>&rarr;</span></button>
                     </div>
+                </div>
 
+                <div class="cta">
+                    <h2 class="cta__book-now">
+                        Good news! We have 4 free rooms for your selected dates!
+                    </h2>
+
+                    <!-- The trick for this is to basically design the button and then put 2 elements inside that button. One of them
+                    says book now and the other one says, Only 4 rooms left and as soon as we hover the button, BOTH pf those elements
+                    move down a little bit and when we hover out, they move back up.
+                    So again: For styling the <button>, we have the button outside and in there we have 2 elements, one for each part of the
+                    text, which move down as we hover and move up when we hover out.
+
+                    We use the btn__visible class for the first element that we put inside that button and the second one btn__invisible.
+
+                    The &__invisible should be on top of the button but in invisible state, so with that, when we hover the button,
+                    it moves down to the center of button. So we will make that .btn__invisible , a completely different element which is out
+                    of the button in the initial state(when the button isn't hovered yet). So for that class, we use absolute positioning,
+                    in order to put it outside of the .btn . -->
+                    <button class="btn">
+                        <span class="btn__visible">Book now</span>
+                        <span class="btn__invisible">Only 4 rooms left</span>
+                    </button>
                 </div>
             </main>
         </div>
